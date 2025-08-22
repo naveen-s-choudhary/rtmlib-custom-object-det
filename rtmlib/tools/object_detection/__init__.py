@@ -1,4 +1,4 @@
 from .rtmdet import RTMDet
-from .yolox import YOLOX
+from .rfdetr_nano import RFDETRNano
 
-__all__ = ['RTMDet', 'YOLOX']
+__all__ = ['RTMDet', 'RFDETRNano']

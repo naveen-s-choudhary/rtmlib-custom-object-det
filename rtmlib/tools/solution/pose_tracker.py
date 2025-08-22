@@ -30,7 +30,7 @@ pose_tracker = PoseTracker(Wholebody,
 # custom = partial(
 #             Custom,
 #             to_openpose=openpose_skeleton,
-#             det_class='YOLOX',
+#             det_class='RFDETRNano',
 #             det='https://download.openmmlab.com/mmpose/v1/projects/rtmposev1/onnx_sdk/yolox_m_8xb8-300e_humanart-c2c7a14a.zip', # noqa
 #             det_input_size=(640, 640),
 #             pose_class='RTMPose',
