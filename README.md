@@ -10,7 +10,8 @@ Basically, rtmlib only requires these dependencies:
 - opencv-python
 - opencv-contrib-python
 - onnxruntime
-
+- rfdetr
+  
 Optionally, you can use other common backends like opencv, onnxruntime, openvino, tensorrt to accelerate the inference process.
 
 - For openvino users, please add the path `<your python path>\envs\<your env name>\Lib\site-packages\openvino\libs` into your environment path.
@@ -26,8 +27,8 @@ pip install rtmlib -i https://pypi.org/simple
 - install from source code:
 
 ```shell
-git clone https://github.com/Tau-J/rtmlib.git
-cd rtmlib
+git clone https://github.com/judeam/rtmlib-custom-object-det.git
+cd rtmlib-custom-object-det
 
 pip install -r requirements.txt
 
@@ -95,7 +96,8 @@ python webui.py
   - [Custom](/rtmlib/tools/solution/custom.py)
   - [PoseTracker](/rtmlib/tools/solution/pose_tracker.py)
 - Models (Low-level APIs)
-  - [YOLOX](/rtmlib/tools/object_detection/yolox.py)
+  ~~- [YOLOX](/rtmlib/tools/object_detection/yolox.py)~~ [REPLACED WITH RF-DETR]
+  - [RFDETR] (/rtmlib/tools/object_detection/rfdetr.py)
   - [RTMDet](/rtmlib/tools/object_detection/rtmdet.py)
   - [RTMPose](/rtmlib/tools/pose_estimation/rtmpose.py)
     - RTMPose for 17 keypoints
