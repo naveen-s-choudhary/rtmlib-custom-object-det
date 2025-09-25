@@ -63,13 +63,15 @@ class YOLO12n(BaseTool):
                 model_path = os.path.join(models_dir, 'person_detector_yolo12.pt')
                 raise FileNotFoundError(f"Model file not found. Please place 'person_detector_yolo12.pt' in: {models_dir}")
 
+        self.model_path = model_path  # Store the original model path
         self.model = YOLO(model_path)
 
         # Export to desired format if using ONNX provider
         if backend == 'onnxruntime':
             self.engine_path = self._export_to_engine()
             # Reinitialize with engine model
-            self.model = YOLO(self.engine_path)
+            if self.engine_path:
+                self.model = YOLO(self.engine_path)
         elif backend == 'onnxruntimea':
             self.onnx_path = self._export_to_onnx()
             # Use base class initialization for ONNX
@@ -78,11 +80,17 @@ class YOLO12n(BaseTool):
     def _export_to_engine(self) -> str:
         """Export YOLO model to TensorRT engine format."""
         try:
-            # Get the model path and generate expected engine path
+            # Generate model-specific engine file name
             model_path = str(self.model.ckpt_path)
-            engine_path = model_path.replace('.pt', '.engine')
+            base_path = model_path.replace('.pt', '')
 
-            # Check if engine file already exists
+            # Include model input size and device in engine file name for uniqueness
+            size_str = f"{self.model_input_size[0]}x{self.model_input_size[1]}"
+            device_str = "cuda" if self.device == 'cuda' else "cpu"
+            precision_str = "fp16" if self.device == 'cuda' else "fp32"
+
+            engine_path = f"{base_path}_{size_str}_{device_str}_{precision_str}.engine"
+
             if os.path.exists(engine_path):
                 print(f"TensorRT engine already exists: {engine_path}")
                 return engine_path
@@ -97,8 +105,15 @@ class YOLO12n(BaseTool):
                 half=True if self.device == 'cuda' else False,
                 workspace=4  # 4GB workspace for TensorRT
             )
-            print(f"Successfully exported model to TensorRT engine: {exported_engine_path}")
-            return exported_engine_path
+
+            # Rename the exported engine to our specific naming convention
+            import shutil
+            if exported_engine_path != engine_path and os.path.exists(exported_engine_path):
+                shutil.move(exported_engine_path, engine_path)
+                print(f"Renamed engine file to: {engine_path}")
+
+            print(f"Successfully exported model to TensorRT engine: {engine_path}")
+            return engine_path
         except Exception as e:
             print(f"Failed to export to TensorRT engine: {e}")
             print("Falling back to PyTorch inference")
