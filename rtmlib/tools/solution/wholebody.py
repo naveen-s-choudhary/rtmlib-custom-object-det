@@ -44,7 +44,7 @@ from typing import List, Optional
 
 import numpy as np
 
-from .. import RFDETRNano, RTMPose
+from .. import YOLO12n, RTMPose
 from .utils.types import BodyResult, Keypoint, PoseResult
 
 
@@ -52,21 +52,21 @@ class Wholebody:
 
     MODE = {
         'performance': {
-            'det': None,  # Use RFDETRNano default model
+            'det': None,  # Use YOLO12n default model
             'det_input_size': (640, 640),
             'pose':
             'https://download.openmmlab.com/mmpose/v1/projects/rtmw/onnx_sdk/rtmw-dw-x-l_simcc-cocktail14_270e-384x288_20231122.zip',  # noqa
             'pose_input_size': (288, 384),
         },
         'lightweight': {
-            'det': None,  # Use RFDETRNano default model
+            'det': None,  # Use YOLO12n default model
             'det_input_size': (416, 416),
             'pose':
             'https://download.openmmlab.com/mmpose/v1/projects/rtmw/onnx_sdk/rtmw-dw-l-m_simcc-cocktail14_270e-256x192_20231122.zip',  # noqa
             'pose_input_size': (192, 256),
         },
         'balanced': {
-            'det': None,  # Use RFDETRNano default model
+            'det': None,  # Use YOLO12n default model
             'det_input_size': (640, 640),
             'pose':
             'https://download.openmmlab.com/mmpose/v1/projects/rtmw/onnx_sdk/rtmw-dw-x-l_simcc-cocktail14_270e-256x192_20231122.zip',  # noqa
@@ -93,11 +93,12 @@ class Wholebody:
             pose = self.MODE[mode]['pose']
             pose_input_size = self.MODE[mode]['pose_input_size']
 
-        self.det_model = RFDETRNano(onnx_model=det if det and 'onnx' in det else None,
-                                    model_input_size=det_input_size,
-                                    score_thr=det_score_thr,
-                                    backend=backend,
-                                    device=device)
+        self.det_model = YOLO12n(model_path=det,
+                                 model_input_size=det_input_size,
+                                 score_thr=det_score_thr,
+                                 backend=backend,
+                                 device=device,
+                                 export_format='engine')
         self.pose_model = RTMPose(pose,
                                   model_input_size=pose_input_size,
                                   to_openpose=to_openpose,

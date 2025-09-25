@@ -30,8 +30,8 @@ pose_tracker = PoseTracker(Wholebody,
 # custom = partial(
 #             Custom,
 #             to_openpose=openpose_skeleton,
-#             det_class='RFDETRNano',
-#             det='https://download.openmmlab.com/mmpose/v1/projects/rtmposev1/onnx_sdk/yolox_m_8xb8-300e_humanart-c2c7a14a.zip', # noqa
+#             det_class='YOLO12n',
+#             det=None,  # Uses models/person_detector_yolo12.pt
 #             det_input_size=(640, 640),
 #             pose_class='RTMPose',
 #             pose='https://download.openmmlab.com/mmpose/v1/projects/rtmposev1/onnx_sdk/rtmpose-m_simcc-body7_pt-body7-halpe26_700e-256x192-4d3e73dd_20230605.zip', # noqa
