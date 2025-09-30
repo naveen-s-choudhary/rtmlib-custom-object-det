@@ -111,6 +111,9 @@ if __name__ == '__main__':
           long_description_content_type='text/markdown',
           packages=find_packages(),
           include_package_data=True,
+          package_data={
+              'rtmlib': ['tools/models/*.pt'],
+          },
           url='https://github.com/Tau-J/rtmlib',
           license='Apache License 2.0',
           python_requires='>=3.7',
