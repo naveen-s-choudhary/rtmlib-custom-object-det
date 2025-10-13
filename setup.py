@@ -11,15 +11,16 @@ version_file = 'rtmlib/version.py'
 
 
 def get_version():
-    with open(version_file, 'r') as f:
-        exec(compile(f.read(), version_file, 'exec'))
     import sys
-
+    version_dict = {}
+    with open(version_file, 'r') as f:
+        exec(compile(f.read(), version_file, 'exec'), version_dict)
+    
     # return short version for sdist
     if 'sdist' in sys.argv or 'bdist_wheel' in sys.argv:
-        return locals()['short_version']
+        return version_dict['short_version']
     else:
-        return locals()['__version__']
+        return version_dict['__version__']
 
 
 def parse_requirements(fname='requirements.txt', with_version=True):
