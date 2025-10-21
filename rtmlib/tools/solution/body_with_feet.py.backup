@@ -106,7 +106,7 @@ class BodyWithFeet:
         self.det_model = YOLO12n(model_path=det,
                                  model_input_size=det_input_size,
                                  score_thr=det_score_thr,
-                                 backend='pytorch' if device == 'cuda' else backend,
+                                 backend=backend,
                                  device=device,
                                  export_format='pytorch' if device == 'cuda' else 'engine')
         self.pose_model = RTMPose(pose,
