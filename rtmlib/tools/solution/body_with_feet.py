@@ -108,7 +108,7 @@ class BodyWithFeet:
                                  score_thr=det_score_thr,
                                  backend=backend,
                                  device=device,
-                                 export_format='engine')
+                                 export_format='pytorch' if device == 'cuda' else 'engine')
         self.pose_model = RTMPose(pose,
                                   model_input_size=pose_input_size,
                                   to_openpose=to_openpose,
